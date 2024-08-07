@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,15 +32,14 @@ namespace Server
             // Placeholder for label2 functionality if needed
         }
 
-        // Disconnect
+        // Disconnect-Click
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
             Stop_Server();
-            
         }
 
-        // Send
+        // Send-Click
         private void button1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txt_Message.Text))
@@ -46,11 +48,12 @@ namespace Server
                 return;
             }
 
-            BroadcastAsync("Server: " + txt_Message.Text, null);
-            ShowMessage("Me: " + txt_Message.Text);
+            BroadcastAsync("Server : " + txt_Message.Text, null);
+            ShowMessage("Tôi gửi: " + txt_Message.Text);
             txt_Message.Clear();
         }
 
+        // Start -Click
         private async void btn_StartServer_Click(object sender, EventArgs e)
         {
             await Start_Server();
@@ -84,7 +87,6 @@ namespace Server
             server.Start();
 
             ShowMessage("Server đã khởi động.....");
-            //mở khóa người dùng khi nhấn nút start
             txt_Message.Enabled = true;
             btn_Send.Enabled = true;
             btn_StopServer.Enabled = true;
@@ -93,35 +95,48 @@ namespace Server
             while (true)
             {
                 TcpClient client = await server.AcceptTcpClientAsync();
-                NetworkStream stream = client.GetStream();
+                NetworkStream networkStream = client.GetStream();
+                SslStream sslStream = new SslStream(networkStream, false);
+
+                //đường dẫn và pass của file chứng chỉ
+
+                string certPath = "server.pfx";
+                string certPass = "abc@123";
+
+                // Tải chứng chỉ máy chủ
+                X509Certificate serverCertificate = new X509Certificate(certPath, certPass);
+                await sslStream.AuthenticateAsServerAsync(serverCertificate, false, System.Security.Authentication.SslProtocols.Tls12, true);
 
                 // Nhận tên người dùng từ client
                 byte[] data_user = new byte[1024];
-                int byte_read = await stream.ReadAsync(data_user, 0, data_user.Length);
+                int byte_read = await sslStream.ReadAsync(data_user, 0, data_user.Length);
                 string username = Encoding.UTF8.GetString(data_user, 0, byte_read).Trim();
 
-                // Thêm client vào danh sách
-                var clientInfo = new ClientInfo { TcpClient = client, Username = username };
+                // Thêm client và username vào danh sách
+                var clientInfo = new ClientInfo { TcpClient = client, SslStream = sslStream, Username = username };
                 clients.Add(clientInfo);
 
                 // Hiển thị thông tin người dùng lên listbox_User
                 ShowUser("User name : " + username);
+                // Thông báo người dùng đã kết nối lên khung chat 
                 ShowMessage(username + " Connected!");
 
-                _ = Handle_Client_Async(clientInfo); // Fire and forget
+                // Gọi hàm xử lý từng client
+                _ = Handle_Client_Async(clientInfo);
             }
         }
 
+        // Hàm xử lý từng client
         private async Task Handle_Client_Async(ClientInfo clientInfo)
         {
-            NetworkStream stream = clientInfo.TcpClient.GetStream();
+            SslStream sslStream = clientInfo.SslStream;
             message = new byte[1024];
             string messRead;
             try
             {
                 while (true)
                 {
-                    int byteRead = await stream.ReadAsync(message, 0, message.Length);
+                    int byteRead = await sslStream.ReadAsync(message, 0, message.Length);
                     if (byteRead == 0) break;
 
                     messRead = Encoding.UTF8.GetString(message, 0, byteRead);
@@ -136,7 +151,7 @@ namespace Server
             }
             finally
             {
-                //Xóa người dùng disconnect khỏi box connect user
+                // Xóa người dùng disconnect khỏi box connect user
                 clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c != clientInfo));
                 clientInfo.TcpClient.Close();
                 ShowMessage(clientInfo.Username + " disconnected!");
@@ -144,6 +159,7 @@ namespace Server
             }
         }
 
+        // Gửi tin nhắn đến các Client khác trong danh sách kết nối
         private async Task BroadcastAsync(string message, TcpClient excludeClient)
         {
             byte[] dataByte = Encoding.UTF8.GetBytes(message);
@@ -153,8 +169,8 @@ namespace Server
                 {
                     try
                     {
-                        NetworkStream stream = clientInfo.TcpClient.GetStream();
-                        await stream.WriteAsync(dataByte, 0, dataByte.Length);
+                        SslStream sslStream = clientInfo.SslStream;
+                        await sslStream.WriteAsync(dataByte, 0, dataByte.Length);
                     }
                     catch (Exception ex)
                     {
@@ -173,13 +189,13 @@ namespace Server
             {
                 foreach (var clientInfo in clients)
                 {
+                    clientInfo.SslStream.Close();
                     clientInfo.TcpClient.Close();
                 }
                 server.Stop();
                 clients = new ConcurrentBag<ClientInfo>();
                 ShowMessage("Server đã ngắt kết nối.");
 
-                //đóng giao diện người dùng
                 txt_Message.Enabled = false;
                 btn_Send.Enabled = false;
                 btn_StopServer.Enabled = false;
@@ -228,6 +244,7 @@ namespace Server
     public class ClientInfo
     {
         public TcpClient TcpClient { get; set; }
+        public SslStream SslStream { get; set; }
         public string Username { get; set; }
     }
 }

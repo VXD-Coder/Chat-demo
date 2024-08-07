@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Security;
 
 namespace Client
 {
     public partial class Client : Form
     {
         private TcpClient _client;
-        private NetworkStream _stream;
+        private SslStream _sslStream;
 
         public Client()
         {
@@ -33,7 +36,7 @@ namespace Client
                 byte[] buffer = Encoding.UTF8.GetBytes(message);
                 try
                 {
-                    _stream.Write(buffer, 0, buffer.Length);
+                    _sslStream.Write(buffer, 0, buffer.Length);
                     txt_Message.Clear();
                 }
                 catch (Exception ex)
@@ -70,7 +73,6 @@ namespace Client
 
             try
             {
-
                 if (string.IsNullOrEmpty(txt_IPAddress.Text) || string.IsNullOrEmpty(txt_Port.Text))
                 {
                     MessageBox.Show("Vui lòng nhập địa chỉ IP và Port lớn hơn 1000 trở lên !!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -92,14 +94,26 @@ namespace Client
 
                 ShowMessage("Đã kết nối đến server");
 
-                _stream = _client.GetStream();
+                NetworkStream networkStream = _client.GetStream();
+                _sslStream = new SslStream(networkStream, false, new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+
+                // Xác thực máy chủ
+                try
+                {
+                    await _sslStream.AuthenticateAsClientAsync(txt_IPAddress.Text);
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage($"Xác thực thất bại: {ex.Message}");
+                    return;
+                }
 
                 // Gửi tên người dùng ngay khi kết nối
                 string username = txt_username.Text;
                 byte[] byte_user = Encoding.UTF8.GetBytes(username);
-                await _stream.WriteAsync(byte_user, 0, byte_user.Length);
+                await _sslStream.WriteAsync(byte_user, 0, byte_user.Length);
 
-                _ = Task.Run(() => ReceiveMessagesAsync(_stream)); // Fire and forget
+                _ = Task.Run(() => ReceiveMessagesAsync(_sslStream)); // Fire and forget
             }
             catch (Exception ex)
             {
@@ -113,9 +127,9 @@ namespace Client
             {
                 try
                 {
-                    _stream?.Close();
+                    _sslStream?.Close();
                     _client?.Close();
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -125,13 +139,14 @@ namespace Client
                 finally
                 {
                     _client = null;
-                    _stream = null;
+                    _sslStream = null;
                     ShowMessage("Đã ngắt kết nối khỏi server");
                 }
             }
         }
 
-        private async Task ReceiveMessagesAsync(NetworkStream stream)
+        //Nhận dữ liệu từ server
+        private async Task ReceiveMessagesAsync(SslStream sslStream)
         {
             byte[] buffer = new byte[1024];
 
@@ -139,7 +154,7 @@ namespace Client
             {
                 while (true)
                 {
-                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                    int bytesRead = await sslStream.ReadAsync(buffer, 0, buffer.Length);
                     if (bytesRead == 0) break;
 
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
@@ -148,11 +163,21 @@ namespace Client
             }
             catch (Exception ex)
             {
-                // Đây là trường hợp kết nối bị lỗi hoặc bị đóng, không phải là lỗi nghiêm trọng
-                ShowMessage($"Mất kết nối!!!!");
+                ShowMessage($"Mất kết nối: {ex.Message}");
                 MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
             }
+        }
+
+        // Xác thực chứng chỉ máy chủ
+        public static bool ValidateServerCertificate(
+            object sender,
+            X509Certificate certificate,
+            X509Chain chain,
+            SslPolicyErrors sslPolicyErrors)
+        {
+            // Ở đây bạn có thể xác thực chứng chỉ server theo nhu cầu của bạn.
+            // Để đơn giản, chúng ta sẽ chấp nhận mọi chứng chỉ.
+            return true;
         }
 
         void ShowMessage(string message)

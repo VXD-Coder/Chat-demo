@@ -69,7 +69,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = SystemColors.ControlDark;
+            panel1.BackColor = SystemColors.ControlLight;
             panel1.Controls.Add(btn_StopServer);
             panel1.Controls.Add(btn_StartServer);
             panel1.Controls.Add(label3);
@@ -172,7 +172,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Showcard Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(530, 12);
+            label5.Location = new Point(525, 12);
             label5.Name = "label5";
             label5.Size = new Size(166, 29);
             label5.TabIndex = 7;
