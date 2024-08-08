@@ -47,10 +47,10 @@
             // txt_Message
             // 
             txt_Message.Enabled = false;
-            txt_Message.Location = new Point(319, 515);
+            txt_Message.Location = new Point(319, 489);
             txt_Message.Multiline = true;
             txt_Message.Name = "txt_Message";
-            txt_Message.Size = new Size(462, 52);
+            txt_Message.Size = new Size(462, 50);
             txt_Message.TabIndex = 2;
             txt_Message.TextChanged += textBox3_TextChanged;
             // 
@@ -59,9 +59,9 @@
             btn_Send.BackColor = SystemColors.MenuHighlight;
             btn_Send.Enabled = false;
             btn_Send.Font = new Font("Stencil", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_Send.Location = new Point(790, 525);
+            btn_Send.Location = new Point(790, 499);
             btn_Send.Name = "btn_Send";
-            btn_Send.Size = new Size(94, 42);
+            btn_Send.Size = new Size(94, 40);
             btn_Send.TabIndex = 3;
             btn_Send.Text = "Send";
             btn_Send.UseVisualStyleBackColor = false;
@@ -78,18 +78,18 @@
             panel1.Controls.Add(txt_Port);
             panel1.Controls.Add(txt_IPAddress);
             panel1.Controls.Add(listbox_User);
-            panel1.Location = new Point(12, 12);
+            panel1.Location = new Point(12, 11);
             panel1.Name = "panel1";
-            panel1.Size = new Size(301, 555);
+            panel1.Size = new Size(301, 527);
             panel1.TabIndex = 5;
             // 
             // btn_StopServer
             // 
             btn_StopServer.Enabled = false;
             btn_StopServer.Font = new Font("Arial Narrow", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_StopServer.Location = new Point(168, 476);
+            btn_StopServer.Location = new Point(168, 452);
             btn_StopServer.Name = "btn_StopServer";
-            btn_StopServer.Size = new Size(116, 34);
+            btn_StopServer.Size = new Size(116, 32);
             btn_StopServer.TabIndex = 9;
             btn_StopServer.Text = "Stop Server";
             btn_StopServer.UseVisualStyleBackColor = true;
@@ -98,9 +98,9 @@
             // btn_StartServer
             // 
             btn_StartServer.Font = new Font("Arial", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btn_StartServer.Location = new Point(15, 476);
+            btn_StartServer.Location = new Point(15, 452);
             btn_StartServer.Name = "btn_StartServer";
-            btn_StartServer.Size = new Size(120, 34);
+            btn_StartServer.Size = new Size(120, 32);
             btn_StartServer.TabIndex = 8;
             btn_StartServer.Text = "Start Server";
             btn_StartServer.UseVisualStyleBackColor = true;
@@ -110,7 +110,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Stencil", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(118, 374);
+            label3.Location = new Point(118, 355);
             label3.Name = "label3";
             label3.Size = new Size(53, 20);
             label3.TabIndex = 5;
@@ -120,7 +120,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Stencil", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(97, 310);
+            label2.Location = new Point(97, 294);
             label2.Name = "label2";
             label2.Size = new Size(106, 20);
             label2.TabIndex = 4;
@@ -131,7 +131,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Showcard Gothic", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(68, 18);
+            label1.Location = new Point(68, 17);
             label1.Name = "label1";
             label1.Size = new Size(161, 23);
             label1.TabIndex = 3;
@@ -139,40 +139,41 @@
             // 
             // txt_Port
             // 
-            txt_Port.Location = new Point(15, 397);
+            txt_Port.Location = new Point(15, 377);
             txt_Port.Name = "txt_Port";
-            txt_Port.Size = new Size(269, 27);
+            txt_Port.Size = new Size(269, 26);
             txt_Port.TabIndex = 2;
             // 
             // txt_IPAddress
             // 
-            txt_IPAddress.Location = new Point(15, 333);
+            txt_IPAddress.Location = new Point(15, 316);
             txt_IPAddress.Name = "txt_IPAddress";
-            txt_IPAddress.Size = new Size(269, 27);
+            txt_IPAddress.Size = new Size(269, 26);
             txt_IPAddress.TabIndex = 1;
             // 
             // listbox_User
             // 
             listbox_User.BackColor = SystemColors.InactiveCaption;
             listbox_User.FormattingEnabled = true;
-            listbox_User.Location = new Point(15, 54);
+            listbox_User.Location = new Point(15, 51);
             listbox_User.Name = "listbox_User";
-            listbox_User.Size = new Size(269, 244);
+            listbox_User.Size = new Size(269, 232);
             listbox_User.TabIndex = 0;
             // 
             // listbox_result
             // 
             listbox_result.FormattingEnabled = true;
-            listbox_result.Location = new Point(319, 58);
+            listbox_result.Location = new Point(319, 55);
             listbox_result.Name = "listbox_result";
-            listbox_result.Size = new Size(562, 444);
+            listbox_result.Size = new Size(562, 422);
             listbox_result.TabIndex = 6;
+            listbox_result.SelectedIndexChanged += listbox_result_SelectedIndexChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Showcard Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(530, 12);
+            label5.Location = new Point(530, 11);
             label5.Name = "label5";
             label5.Size = new Size(166, 29);
             label5.TabIndex = 7;
@@ -180,10 +181,10 @@
             // 
             // Server
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(8F, 19F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDarkDark;
-            ClientSize = new Size(896, 579);
+            ClientSize = new Size(896, 550);
             Controls.Add(label5);
             Controls.Add(listbox_result);
             Controls.Add(panel1);

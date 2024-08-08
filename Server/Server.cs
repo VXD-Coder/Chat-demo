@@ -34,7 +34,7 @@ namespace Server
         {
             this.Close();
             Stop_Server();
-            
+
         }
 
         // Send
@@ -221,6 +221,11 @@ namespace Server
             {
                 listbox_result.Items.Add(message);
             }
+        }
+
+        private void listbox_result_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

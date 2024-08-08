@@ -115,7 +115,7 @@ namespace Client
                 {
                     _stream?.Close();
                     _client?.Close();
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -148,7 +148,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                // Đây là trường hợp kết nối bị lỗi hoặc bị đóng, không phải là lỗi nghiêm trọng
+                // Đây là trường hợp kết nối bị lỗi hoặc bị đóng, không phải là lỗi nghiêm trọng !!!
                 ShowMessage($"Mất kết nối!!!!");
                 MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -165,6 +165,11 @@ namespace Client
             {
                 listbox_result.Items.Add(message);
             }
+        }
+
+        private void listbox_result_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
