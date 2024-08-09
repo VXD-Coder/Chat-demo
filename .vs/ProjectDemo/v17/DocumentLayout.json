@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{2872F552-EF39-425C-9081-7D520653E6CD}|Client\\Client.csproj|solutionrelative:client\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2872F552-EF39-425C-9081-7D520653E6CD}|Client\\Client.csproj|D:\\Study\\2023-2024\\Lap Trinh Mang\\BTGK\\Chat-demo\\client\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{2872F552-EF39-425C-9081-7D520653E6CD}|Client\\Client.csproj|d:\\study\\2023-2024\\lap trinh mang\\btgk\\chat-demo\\client\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{2872F552-EF39-425C-9081-7D520653E6CD}|Client\\Client.csproj|solutionrelative:client\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -44,7 +44,7 @@
               "RelativeDocumentMoniker": "Client\\Client.cs",
               "ToolTip": "D:\\Study\\2023-2024\\Lap Trinh Mang\\BTGK\\Chat-demo\\Client\\Client.cs",
               "RelativeToolTip": "Client\\Client.cs",
-              "ViewState": "AQIAAIIAAAAAAAAAAAAAAJEAAAApAAAA",
+              "ViewState": "AQIAAE8AAAAAAAAAAAAswGEAAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-08T14:03:46.618Z",
               "EditorCaption": ""
@@ -55,8 +55,8 @@
               "Title": "Server.cs",
               "DocumentMoniker": "D:\\Study\\2023-2024\\Lap Trinh Mang\\BTGK\\Chat-demo\\Server\\Server.cs",
               "RelativeDocumentMoniker": "Server\\Server.cs",
-              "ToolTip": "D:\\Study\\2023-2024\\Lap Trinh Mang\\BTGK\\Chat-demo\\Server\\Server.cs*",
-              "RelativeToolTip": "Server\\Server.cs*",
+              "ToolTip": "D:\\Study\\2023-2024\\Lap Trinh Mang\\BTGK\\Chat-demo\\Server\\Server.cs",
+              "RelativeToolTip": "Server\\Server.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAOcAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-07T02:12:21.846Z",
@@ -72,8 +72,7 @@
               "RelativeToolTip": "Server\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-07T00:11:10.483Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-07T00:11:10.483Z"
             },
             {
               "$type": "Document",
@@ -96,8 +95,7 @@
               "ToolTip": "D:\\Study\\2023-2024\\Lap Trinh Mang\\BTGK\\Chat-demo\\Server\\Server.cs [Design]*",
               "RelativeToolTip": "Server\\Server.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-07T00:11:18.768Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-08-07T00:11:18.768Z"
             }
           ]
         }

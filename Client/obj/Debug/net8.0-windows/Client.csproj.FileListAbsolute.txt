@@ -35,21 +35,4 @@ D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Client\obj\Debug\net8.0-windows
 D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Client\obj\Debug\net8.0-windows\Client.genruntimeconfig.cache
 D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Client\obj\Debug\net8.0-windows\ref\Client.dll
 =======
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\bin\Debug\net8.0-windows\Client.exe
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\bin\Debug\net8.0-windows\Client.deps.json
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\bin\Debug\net8.0-windows\Client.runtimeconfig.json
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\bin\Debug\net8.0-windows\Client.dll
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\bin\Debug\net8.0-windows\Client.pdb
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.Client.resources
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.Properties.Resources.resources
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.csproj.GenerateResource.cache
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.GeneratedMSBuildEditorConfig.editorconfig
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.AssemblyInfoInputs.cache
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.AssemblyInfo.cs
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.csproj.CoreCompileInputs.cache
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.dll
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\refint\Client.dll
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.pdb
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\Client.genruntimeconfig.cache
-D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Client\obj\Debug\net8.0-windows\ref\Client.dll
 >>>>>>> e0782b54e93247ea0169fedca1dd2ec26ef09d33

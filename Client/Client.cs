@@ -100,6 +100,7 @@ namespace Client
                 byte[] byte_user = Encoding.UTF8.GetBytes(username);
                 await _stream.WriteAsync(byte_user, 0, byte_user.Length);
 
+
                 _ = Task.Run(() => ReceiveMessagesAsync(_stream)); // Fire and forget
             }
             catch (Exception ex)
@@ -149,7 +150,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                // Đây là trường hợp kết nối bị lỗi hoặc bị đóng, không phải là lỗi nghiêm trọng !!!
+                // Đây là trường hợp kết nối bị lỗi hoặc bị đóng,        không phải là lỗi nghiêm trọng !!!
                 ShowMessage($"Mất kết nối!!!!");
                 MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
 

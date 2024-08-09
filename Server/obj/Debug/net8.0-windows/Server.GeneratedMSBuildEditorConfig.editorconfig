@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 is_global = true
 build_property.ApplicationManifest = 
 build_property.StartupObject = 
@@ -18,24 +17,3 @@ build_property.RootNamespace = Server
 build_property.ProjectDir = D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
-=======
-is_global = true
-build_property.ApplicationManifest = 
-build_property.StartupObject = 
-build_property.ApplicationDefaultFont = 
-build_property.ApplicationHighDpiMode = 
-build_property.ApplicationUseCompatibleTextRendering = 
-build_property.ApplicationVisualStyles = 
-build_property.TargetFramework = net8.0-windows
-build_property.TargetPlatformMinVersion = 7.0
-build_property.UsingMicrosoftNETSdkWeb = 
-build_property.ProjectTypeGuids = 
-build_property.InvariantGlobalization = 
-build_property.PlatformNeutralAssembly = 
-build_property.EnforceExtendedAnalyzerRules = 
-build_property._SupportedPlatformList = Linux,macOS,Windows
-build_property.RootNamespace = Server
-build_property.ProjectDir = D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\
-build_property.EnableComHosting = 
-build_property.EnableGeneratedComInterfaceComImportInterop = 
->>>>>>> e0782b54e93247ea0169fedca1dd2ec26ef09d33
