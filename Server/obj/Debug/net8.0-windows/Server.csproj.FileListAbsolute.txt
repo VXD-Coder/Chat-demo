@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\bin\Debug\net8.0-windows\Server.exe
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\bin\Debug\net8.0-windows\Server.deps.json
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\bin\Debug\net8.0-windows\Server.runtimeconfig.json
@@ -15,22 +14,20 @@ D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\obj\Debug\net8.0-
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\obj\Debug\net8.0-windows\Server.pdb
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\obj\Debug\net8.0-windows\Server.genruntimeconfig.cache
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\ProjectDemo\Server\obj\Debug\net8.0-windows\ref\Server.dll
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\bin\Debug\net8.0-windows\Server.exe
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\bin\Debug\net8.0-windows\Server.deps.json
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\bin\Debug\net8.0-windows\Server.runtimeconfig.json
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\bin\Debug\net8.0-windows\Server.dll
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\bin\Debug\net8.0-windows\Server.pdb
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.Server.resources
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.csproj.GenerateResource.cache
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.GeneratedMSBuildEditorConfig.editorconfig
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.AssemblyInfoInputs.cache
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.AssemblyInfo.cs
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.csproj.CoreCompileInputs.cache
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.sourcelink.json
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.dll
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\refint\Server.dll
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.pdb
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\Server.genruntimeconfig.cache
-D:\Study\2023-2024\Lap Trinh Mang\BTGK\Chat-demo\Server\obj\Debug\net8.0-windows\ref\Server.dll
-=======
->>>>>>> e0782b54e93247ea0169fedca1dd2ec26ef09d33
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\bin\Debug\net8.0-windows\Server.exe
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\bin\Debug\net8.0-windows\Server.deps.json
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\bin\Debug\net8.0-windows\Server.runtimeconfig.json
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\bin\Debug\net8.0-windows\Server.dll
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\bin\Debug\net8.0-windows\Server.pdb
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.Server.resources
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.csproj.GenerateResource.cache
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.GeneratedMSBuildEditorConfig.editorconfig
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.AssemblyInfoInputs.cache
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.AssemblyInfo.cs
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.csproj.CoreCompileInputs.cache
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.sourcelink.json
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.dll
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\refint\Server.dll
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.pdb
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\Server.genruntimeconfig.cache
+D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Server\obj\Debug\net8.0-windows\ref\Server.dll
