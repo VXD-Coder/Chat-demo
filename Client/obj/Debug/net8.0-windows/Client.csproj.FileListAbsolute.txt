@@ -54,3 +54,21 @@ D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Client\obj\Debug\net8.0-wi
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Client\obj\Debug\net8.0-windows\Client.pdb
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Client\obj\Debug\net8.0-windows\Client.genruntimeconfig.cache
 D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Client\obj\Debug\net8.0-windows\ref\Client.dll
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\bin\Debug\net8.0-windows\Client.exe
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\bin\Debug\net8.0-windows\Client.deps.json
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\bin\Debug\net8.0-windows\Client.runtimeconfig.json
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\bin\Debug\net8.0-windows\Client.dll
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\bin\Debug\net8.0-windows\Client.pdb
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.Client.resources
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.Properties.Resources.resources
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.csproj.GenerateResource.cache
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.GeneratedMSBuildEditorConfig.editorconfig
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.AssemblyInfoInputs.cache
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.AssemblyInfo.cs
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.csproj.CoreCompileInputs.cache
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.sourcelink.json
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.dll
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\refint\Client.dll
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.pdb
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\Client.genruntimeconfig.cache
+D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\obj\Debug\net8.0-windows\ref\Client.dll
