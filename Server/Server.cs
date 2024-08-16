@@ -22,16 +22,6 @@ namespace Server
             InitializeComponent();
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-            // Placeholder for textBox3 functionality if needed
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-            // Placeholder for label2 functionality if needed
-        }
-
         // Disconnect-Click
         private void button3_Click(object sender, EventArgs e)
         {
@@ -59,13 +49,13 @@ namespace Server
             await Start_Server();
         }
 
-         void ShowLocalIPAddress()
+        void ShowLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
 
-            foreach(var ip in host.AddressList)
+            foreach (var ip in host.AddressList)
             {
-                if(ip.AddressFamily == AddressFamily.InterNetwork)
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     showIP(ip.ToString());
                 }
@@ -82,7 +72,7 @@ namespace Server
 
             ShowLocalIPAddress();
 
-            ShowMessage("Server đã khởi động.....");
+            showStatus("Server đã khởi động.....");
             txt_Message.Enabled = true;
             btn_Send.Enabled = true;
             btn_StopServer.Enabled = true;
@@ -95,7 +85,6 @@ namespace Server
                 SslStream sslStream = new SslStream(networkStream, false);
 
                 //đường dẫn và pass của file chứng chỉ
-
                 string certPath = "server.pfx";
                 string certPass = "abc@123";
 
@@ -114,8 +103,10 @@ namespace Server
 
                 // Hiển thị thông tin người dùng lên listbox_User
                 ShowUser("User name : " + username);
-                // Thông báo người dùng đã kết nối lên khung chat 
-                ShowMessage(username + " Connected!");
+                showStatus(username + " Connected!");
+
+                // Gửi danh sách người dùng cho tất cả các client
+                await SendClientListToAll();
 
                 // Gọi hàm xử lý từng client
                 _ = Handle_Client_Async(clientInfo);
@@ -143,13 +134,17 @@ namespace Server
             }
             catch (Exception ex)
             {
-                ShowMessage("Error: " + ex.Message);
+                showStatus("Error: " + ex.Message);
             }
             finally
             {
                 clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c != clientInfo));
                 clientInfo.TcpClient.Close();
-                ShowMessage(clientInfo.Username + " disconnected!");
+
+                // Cập nhật danh sách người dùng cho tất cả các client
+                await SendClientListToAll();
+
+                showStatus(clientInfo.Username + " disconnected!");
                 RemoveUser("User name : " + clientInfo.Username);
             }
         }
@@ -169,7 +164,7 @@ namespace Server
                     }
                     catch (Exception ex)
                     {
-                        ShowMessage("Client Disconnected: " + ex.Message);
+                        showStatus("Client Disconnected: " + ex.Message);
                         clientInfo.TcpClient.Close();
                         clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c != clientInfo));
                     }
@@ -177,7 +172,32 @@ namespace Server
 
             await Task.WhenAll(tasks);
         }
-        //đóng server 
+
+        // Gửi danh sách người dùng đến tất cả các client
+        private async Task SendClientListToAll()
+        {
+            var clientListMessage = "/ClientList " + string.Join(", ", clients.Select(c => c.Username));
+            byte[] dataByte = Encoding.UTF8.GetBytes(clientListMessage);
+
+            var tasks = clients.Select(async clientInfo =>
+            {
+                try
+                {
+                    SslStream sslStream = clientInfo.SslStream;
+                    await sslStream.WriteAsync(dataByte, 0, dataByte.Length);
+                }
+                catch (Exception ex)
+                {
+                    showStatus("Client Disconnected: " + ex.Message);
+                    clientInfo.TcpClient.Close();
+                    clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c != clientInfo));
+                }
+            }).ToList();
+
+            await Task.WhenAll(tasks);
+        }
+
+        // Đóng server
         private void Stop_Server()
         {
             if (server != null)
@@ -189,7 +209,7 @@ namespace Server
                 }
                 server.Stop();
                 clients = new ConcurrentBag<ClientInfo>();
-                ShowMessage("Server đã ngắt kết nối.");
+                showStatus("Server đã ngắt kết nối.");
 
                 txt_Message.Enabled = false;
                 btn_Send.Enabled = false;
@@ -197,7 +217,8 @@ namespace Server
                 btn_StartServer.Enabled = true;
             }
         }
-        // đưa danh sach user(Client) kết nối tới server lên Ô Connect user
+
+        // Đưa danh sách user(Client) kết nối tới server lên Ô Connect user
         void ShowUser(string username)
         {
             if (listbox_User.InvokeRequired)
@@ -209,7 +230,8 @@ namespace Server
                 listbox_User.Items.Add(username);
             }
         }
-        //xóa người dùng (Client ) đã ngắt kết nối với user
+
+        // Xóa người dùng (Client) đã ngắt kết nối với user
         void RemoveUser(string username)
         {
             if (listbox_User.InvokeRequired)
@@ -221,7 +243,8 @@ namespace Server
                 listbox_User.Items.Remove(username);
             }
         }
-        //đưa tin nhắn lên Ô Message 
+
+        // Đưa tin nhắn lên Ô Message
         void ShowMessage(string message)
         {
             if (listbox_result.InvokeRequired)
@@ -233,7 +256,8 @@ namespace Server
                 listbox_result.Items.Add(message);
             }
         }
-        //đưa thông tin IP server lên ô địa chỉ server
+
+        // Đưa thông tin IP server lên ô địa chỉ server
         public void showIP(string message)
         {
             if (txt_IPAddress.InvokeRequired)
@@ -246,9 +270,18 @@ namespace Server
             }
         }
 
+        public void showStatus(string message)
+        {
+            if (txt_status.InvokeRequired)
+            {
+                txt_status.Invoke(new Action(() => showStatus(message)));
+            }
+            else
+            {
+                txt_status.Text = message + Environment.NewLine + txt_status.Text;
+            }
+        }
     }
-
-
 
     // Định nghĩa lớp ClientInfo để lưu trữ thông tin của mỗi client
     public class ClientInfo

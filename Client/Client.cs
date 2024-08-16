@@ -18,7 +18,8 @@ namespace Client
         {
             InitializeComponent();
         }
-        //Gửi tin nhắn
+
+        // Gửi tin nhắn
         private void btn_Send_Click(object sender, EventArgs e)
         {
             if (_client == null || !_client.Connected)
@@ -28,10 +29,10 @@ namespace Client
             }
 
             string message = txt_Message.Text;
-            //kiểm tra khung tin nhắn đã có nọi dung hay chưa
+            // Kiểm tra khung tin nhắn đã có nội dung hay chưa
             if (!string.IsNullOrEmpty(message))
             {
-                ShowMessage($"Tôi gửi: {txt_Message.Text}");
+                ShowMessage($"Tôi gửi: {message}");
                 byte[] buffer = Encoding.UTF8.GetBytes(message);
                 try
                 {
@@ -40,7 +41,7 @@ namespace Client
                 }
                 catch (Exception ex)
                 {
-                    ShowMessage($"Gửi tin nhắn thất bại: {ex.Message}");
+                    showStatus($"Gửi tin nhắn thất bại: {ex.Message}");
                 }
             }
             else
@@ -48,7 +49,8 @@ namespace Client
                 MessageBox.Show("Vui lòng nhập tin nhắn trước khi gửi", "Thông báo *_*", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //Connect server
+
+        // Kết nối tới server
         private async void btn_connect_Click(object sender, EventArgs e)
         {
             await Connect();
@@ -57,7 +59,8 @@ namespace Client
             btn_disconnect.Enabled = true;
             btn_connect.Enabled = false;
         }
-        //Disconnect server
+
+        // Ngắt kết nối khỏi server
         private void btn_disconnect_Click(object sender, EventArgs e)
         {
             Disconnect();
@@ -68,13 +71,14 @@ namespace Client
 
             this.Close();
         }
-        //xử lý kết nối tới server
 
+        // Xử lý kết nối tới server
         private async Task Connect()
         {
-            IPAddress IP;
+            IPAddress ip;
             int port;
             string username;
+
             try
             {
                 if (string.IsNullOrEmpty(txt_IPAddress.Text) || string.IsNullOrEmpty(txt_Port.Text))
@@ -83,39 +87,41 @@ namespace Client
                     return;
                 }
 
-                if (!IPAddress.TryParse(txt_IPAddress.Text, out IP))
+                if (!IPAddress.TryParse(txt_IPAddress.Text, out ip))
                 {
                     MessageBox.Show("Vui lòng nhập đúng địa chỉ IP!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                if (!int.TryParse(txt_Port.Text, out port))
+
+                if (!int.TryParse(txt_Port.Text, out port) || port <= 1000)
                 {
                     MessageBox.Show("Vui lòng nhập Port có giá trị lớn hơn 1000!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                if (!string.IsNullOrEmpty(txt_Message.Text))
+
+                if (string.IsNullOrEmpty(txt_username.Text))
                 {
-                    MessageBox.Show("Vui lòng nhâp tên người dùng *_*", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Vui lòng nhập tên người dùng *_*", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-
                 _client = new TcpClient();
-                await _client.ConnectAsync(IP, port);
+                await _client.ConnectAsync(ip, port);
 
-                ShowMessage("Đã kết nối đến server");
-                //khỏi tạo lớp Sslstream để mã hóa dữ liệu khi gửi
+                showStatus("Đã kết nối đến server");
+
                 NetworkStream networkStream = _client.GetStream();
                 _sslStream = new SslStream(networkStream, false, new RemoteCertificateValidationCallback(ValidateServerCertificate), null);
 
                 // Xác thực máy chủ
                 try
                 {
-                    await _sslStream.AuthenticateAsClientAsync(txt_IPAddress.Text);
+                    // Thay đổi tên máy chủ thành tên máy chủ hoặc địa chỉ IP của server
+                    await _sslStream.AuthenticateAsClientAsync(ip.ToString());
                 }
                 catch (Exception ex)
                 {
-                    ShowMessage($"Xác thực thất bại: {ex.Message}");
+                    showStatus($"Xác thực thất bại: {ex.Message}");
                     return;
                 }
 
@@ -124,6 +130,7 @@ namespace Client
                 byte[] byte_user = Encoding.UTF8.GetBytes(username);
                 await _sslStream.WriteAsync(byte_user, 0, byte_user.Length);
 
+                // Bắt đầu nhận tin nhắn
                 _ = Task.Run(() => ReceiveMessagesAsync(_sslStream));
             }
             catch (Exception ex)
@@ -131,7 +138,8 @@ namespace Client
                 MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //Ngắt kết nối tới Server
+
+        // Ngắt kết nối khỏi server
         private void Disconnect()
         {
             if (_client != null)
@@ -140,7 +148,6 @@ namespace Client
                 {
                     _sslStream?.Close();
                     _client?.Close();
-
                 }
                 catch (Exception ex)
                 {
@@ -151,12 +158,13 @@ namespace Client
                 {
                     _client = null;
                     _sslStream = null;
-                    ShowMessage("Đã ngắt kết nối khỏi server");
+                    showStatus("Đã ngắt kết nối khỏi server");
                 }
             }
         }
 
-        //Nhận dữ liệu từ server
+        // Nhận dữ liệu từ server
+        // Nhận dữ liệu từ server
         private async Task ReceiveMessagesAsync(SslStream sslStream)
         {
             byte[] buffer = new byte[1024];
@@ -168,16 +176,30 @@ namespace Client
                     int bytesRead = await sslStream.ReadAsync(buffer, 0, buffer.Length);
                     if (bytesRead == 0) break;
 
-                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    ShowMessage(message);
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead).Trim();
+
+                    // Xử lý thông điệp danh sách người dùng
+                    if (message.StartsWith("/ClientList"))
+                    {
+                        string userList = message.Substring("/ClientList".Length).Trim();
+                        // Tách danh sách người dùng
+                        string[] users = userList.Split(new[] { ", " }, StringSplitOptions.None);
+                        UpdateUserList(users);
+                    }
+                    else
+                    {
+                        ShowMessage(message);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                ShowMessage($"Mất kết nối: {ex.Message}");
+                showStatus($"Mất kết nối: {ex.Message}");
                 MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         // Xác thực chứng chỉ máy chủ
         public static bool ValidateServerCertificate(
@@ -190,7 +212,8 @@ namespace Client
             // Để đơn giản, chúng ta sẽ chấp nhận mọi chứng chỉ.
             return true;
         }
-        //đưa dữ liệu tin nhắn lên Message Box
+
+        // Đưa dữ liệu tin nhắn lên Message Box
         void ShowMessage(string message)
         {
             if (listbox_result.InvokeRequired)
@@ -202,6 +225,56 @@ namespace Client
                 listbox_result.Items.Add(message);
             }
         }
+
+
+
+        // Cập nhật danh sách người dùng trên giao diện người dùng
+        void UpdateUserList(string[] users)
+        {
+            if (listbox_User.InvokeRequired)
+            {
+                // Sử dụng Invoke để cập nhật giao diện người dùng từ luồng khác
+                listbox_User.Invoke(new Action(() =>
+                {
+                    // Xóa toàn bộ danh sách hiện tại
+                    listbox_User.Items.Clear();
+
+                    // Thêm các người dùng mới vào ListBox
+                    foreach (string user in users)
+                    {
+                        if (!string.IsNullOrWhiteSpace(user))
+                        {
+                            listbox_User.Items.Add(user);
+                        }
+                    }
+                }));
+            }
+            else
+            {
+                // Cập nhật giao diện người dùng trực tiếp nếu đang ở luồng chính
+                listbox_User.Items.Clear();
+                foreach (string user in users)
+                {
+                    if (!string.IsNullOrWhiteSpace(user))
+                    {
+                        listbox_User.Items.Add(user);
+                    }
+                }
+            }
+        }
+
+
+
+        public void showStatus(string message)
+        {
+            if (txt_status.InvokeRequired)
+            {
+                txt_status.Invoke(new Action(() => showStatus(message)));
+            }
+            else
+            {
+                txt_status.Text = message + Environment.NewLine + txt_status.Text;
+            }
+        }
     }
 }
-

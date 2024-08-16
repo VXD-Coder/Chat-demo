@@ -31,6 +31,7 @@
             txt_Message = new TextBox();
             btn_Send = new Button();
             panel1 = new Panel();
+            label6 = new Label();
             btn_StopServer = new Button();
             btn_StartServer = new Button();
             label3 = new Label();
@@ -40,19 +41,23 @@
             txt_IPAddress = new TextBox();
             listbox_User = new ListBox();
             listbox_result = new ListBox();
+            label4 = new Label();
+            txt_status = new TextBox();
+            panel2 = new Panel();
+            panel3 = new Panel();
             label5 = new Label();
             panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // txt_Message
             // 
-            txt_Message.Enabled = false;
-            txt_Message.Location = new Point(319, 515);
+            txt_Message.Location = new Point(322, 518);
             txt_Message.Multiline = true;
             txt_Message.Name = "txt_Message";
-            txt_Message.Size = new Size(462, 52);
-            txt_Message.TabIndex = 2;
-            txt_Message.TextChanged += textBox3_TextChanged;
+            txt_Message.Size = new Size(462, 49);
+            txt_Message.TabIndex = 12;
             // 
             // btn_Send
             // 
@@ -70,6 +75,7 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.ControlLight;
+            panel1.Controls.Add(label6);
             panel1.Controls.Add(btn_StopServer);
             panel1.Controls.Add(btn_StartServer);
             panel1.Controls.Add(label3);
@@ -83,11 +89,21 @@
             panel1.Size = new Size(301, 555);
             panel1.TabIndex = 5;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Stencil", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(97, 382);
+            label6.Name = "label6";
+            label6.Size = new Size(106, 20);
+            label6.TabIndex = 11;
+            label6.Text = "IP Address";
+            // 
             // btn_StopServer
             // 
             btn_StopServer.Enabled = false;
             btn_StopServer.Font = new Font("Arial Narrow", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_StopServer.Location = new Point(168, 476);
+            btn_StopServer.Location = new Point(168, 499);
             btn_StopServer.Name = "btn_StopServer";
             btn_StopServer.Size = new Size(116, 34);
             btn_StopServer.TabIndex = 9;
@@ -98,7 +114,7 @@
             // btn_StartServer
             // 
             btn_StartServer.Font = new Font("Arial", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btn_StartServer.Location = new Point(15, 476);
+            btn_StartServer.Location = new Point(15, 499);
             btn_StartServer.Name = "btn_StartServer";
             btn_StartServer.Size = new Size(120, 34);
             btn_StartServer.TabIndex = 8;
@@ -110,7 +126,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Stencil", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(15, 387);
+            label3.Location = new Point(15, 457);
             label3.Name = "label3";
             label3.Size = new Size(62, 20);
             label3.TabIndex = 5;
@@ -118,14 +134,10 @@
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Stencil", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(97, 310);
+            label2.Location = new Point(0, 0);
             label2.Name = "label2";
-            label2.Size = new Size(106, 20);
-            label2.TabIndex = 4;
-            label2.Text = "IP Address";
-            label2.Click += label2_Click;
+            label2.Size = new Size(100, 23);
+            label2.TabIndex = 10;
             // 
             // label1
             // 
@@ -140,7 +152,7 @@
             // txt_Port
             // 
             txt_Port.Enabled = false;
-            txt_Port.Location = new Point(97, 383);
+            txt_Port.Location = new Point(97, 453);
             txt_Port.Name = "txt_Port";
             txt_Port.Size = new Size(187, 27);
             txt_Port.TabIndex = 2;
@@ -150,7 +162,7 @@
             // txt_IPAddress
             // 
             txt_IPAddress.Enabled = false;
-            txt_IPAddress.Location = new Point(15, 333);
+            txt_IPAddress.Location = new Point(15, 405);
             txt_IPAddress.Multiline = true;
             txt_IPAddress.Name = "txt_IPAddress";
             txt_IPAddress.Size = new Size(269, 28);
@@ -162,25 +174,62 @@
             listbox_User.FormattingEnabled = true;
             listbox_User.Location = new Point(15, 54);
             listbox_User.Name = "listbox_User";
-            listbox_User.Size = new Size(269, 244);
+            listbox_User.Size = new Size(269, 304);
             listbox_User.TabIndex = 0;
             // 
             // listbox_result
             // 
             listbox_result.FormattingEnabled = true;
-            listbox_result.Location = new Point(319, 58);
+            listbox_result.Location = new Point(319, 125);
             listbox_result.Name = "listbox_result";
-            listbox_result.Size = new Size(562, 444);
+            listbox_result.Size = new Size(562, 384);
             listbox_result.TabIndex = 6;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Showcard Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Location = new Point(21, 18);
+            label4.Name = "label4";
+            label4.Size = new Size(108, 29);
+            label4.TabIndex = 8;
+            label4.Text = "Status :";
+            // 
+            // txt_status
+            // 
+            txt_status.Location = new Point(126, 18);
+            txt_status.Multiline = true;
+            txt_status.Name = "txt_status";
+            txt_status.Size = new Size(418, 27);
+            txt_status.TabIndex = 9;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = SystemColors.ControlLight;
+            panel2.Controls.Add(label4);
+            panel2.Controls.Add(txt_status);
+            panel2.Location = new Point(322, 12);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(562, 59);
+            panel2.TabIndex = 10;
+            // 
+            // panel3
+            // 
+            panel3.BackColor = SystemColors.ControlLight;
+            panel3.Controls.Add(label5);
+            panel3.Location = new Point(482, 77);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(227, 47);
+            panel3.TabIndex = 11;
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Showcard Gothic", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(525, 12);
+            label5.Location = new Point(37, 10);
             label5.Name = "label5";
             label5.Size = new Size(166, 29);
-            label5.TabIndex = 7;
+            label5.TabIndex = 8;
             label5.Text = "MESSAGE BOX";
             // 
             // Server
@@ -189,7 +238,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(896, 579);
-            Controls.Add(label5);
+            Controls.Add(panel3);
+            Controls.Add(panel2);
             Controls.Add(listbox_result);
             Controls.Add(panel1);
             Controls.Add(btn_Send);
@@ -198,6 +248,10 @@
             Text = "Server";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -215,6 +269,11 @@
         private ListBox listbox_result;
         private Button btn_StopServer;
         private Button btn_StartServer;
+        private Label label4;
+        private TextBox txt_status;
+        private Panel panel2;
+        private Panel panel3;
         private Label label5;
+        private Label label6;
     }
 }
