@@ -13,6 +13,7 @@ namespace Server
 {
     public partial class Server : Form
     {
+        // Sử dụng lại ConcurrentBag thay vì ConcurrentDictionary
         private static ConcurrentBag<ClientInfo> clients = new ConcurrentBag<ClientInfo>();
         private TcpListener server;
         private byte[] message;
@@ -22,34 +23,8 @@ namespace Server
             InitializeComponent();
         }
 
-        // Disconnect-Click
-        private void button3_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Stop_Server();
-        }
-
-        // Send-Click
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(txt_Message.Text))
-            {
-                MessageBox.Show("Vui lòng nhập tin nhắn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            BroadcastAsync("Server : " + txt_Message.Text, null);
-            ShowMessage("Tôi gửi: " + txt_Message.Text);
-            txt_Message.Clear();
-        }
-
-        // Start -Click
-        private async void btn_StartServer_Click(object sender, EventArgs e)
-        {
-            await Start_Server();
-        }
-
-        void ShowLocalIPAddress()
+        // Hiển thị thông tin địa chỉ IP của server
+        private void ShowLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
 
@@ -57,22 +32,29 @@ namespace Server
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    showIP(ip.ToString());
+                    if (txt_IPAddress.InvokeRequired)
+                    {
+                        txt_IPAddress.Invoke(new Action(() =>
+                            txt_IPAddress.Text = ip.ToString() + Environment.NewLine + txt_IPAddress.Text));
+                    }
+                    else
+                    {
+                        txt_IPAddress.Text = ip.ToString() + Environment.NewLine + txt_IPAddress.Text;
+                    }
                 }
             }
         }
 
-        // Khởi tạo hàm khởi động Server (không đồng bộ)
+        // Khởi động server (không đồng bộ)
         public async Task Start_Server()
         {
             int port = 9999;
 
             server = new TcpListener(IPAddress.Any, port);
             server.Start();
-
             ShowLocalIPAddress();
+            showStatus("Server đã khởi động...");
 
-            showStatus("Server đã khởi động.....");
             txt_Message.Enabled = true;
             btn_Send.Enabled = true;
             btn_StopServer.Enabled = true;
@@ -81,55 +63,41 @@ namespace Server
             while (true)
             {
                 TcpClient client = await server.AcceptTcpClientAsync();
-                NetworkStream networkStream = client.GetStream();
-                SslStream sslStream = new SslStream(networkStream, false);
-
-                //đường dẫn và pass của file chứng chỉ
-                string certPath = "server.pfx";
-                string certPass = "abc@123";
-
-                // Tải chứng chỉ máy chủ
-                X509Certificate serverCertificate = new X509Certificate(certPath, certPass);
-                await sslStream.AuthenticateAsServerAsync(serverCertificate, false, System.Security.Authentication.SslProtocols.Tls12, true);
-
-                // Nhận tên người dùng từ client
-                byte[] data_user = new byte[1024];
-                int byte_read = await sslStream.ReadAsync(data_user, 0, data_user.Length);
-                string username = Encoding.UTF8.GetString(data_user, 0, byte_read).Trim();
-
-                // Thêm client và username vào danh sách
-                var clientInfo = new ClientInfo { TcpClient = client, SslStream = sslStream, Username = username };
-                clients.Add(clientInfo);
-
-                // Hiển thị thông tin người dùng lên listbox_User
-                ShowUser("User name : " + username);
-                showStatus(username + " Connected!");
-
-                // Gửi danh sách người dùng cho tất cả các client
-                await SendClientListToAll();
-
-                // Gọi hàm xử lý từng client
-                _ = Handle_Client_Async(clientInfo);
+                _ = HandleClientAsync(client);
             }
         }
 
-        // Hàm xử lý từng client
-        private async Task Handle_Client_Async(ClientInfo clientInfo)
+        // Xử lý từng client (không đồng bộ)
+        private async Task HandleClientAsync(TcpClient client)
         {
-            SslStream sslStream = clientInfo.SslStream;
-            message = new byte[1024];
-            string messRead;
+            string username = null;
             try
             {
-                while (true)
+                using (var networkStream = client.GetStream())
+                using (var sslStream = new SslStream(networkStream, false))
                 {
-                    int byteRead = await sslStream.ReadAsync(message, 0, message.Length);
-                    if (byteRead == 0) break;
+                    // Đường dẫn và pass của file chứng chỉ
+                    string certPath = "server.pfx";
+                    string certPass = "abc@123";
+                    var serverCertificate = new X509Certificate(certPath, certPass);
+                    await sslStream.AuthenticateAsServerAsync(serverCertificate, false, System.Security.Authentication.SslProtocols.Tls12, true);
 
-                    messRead = Encoding.UTF8.GetString(message, 0, byteRead);
-                    ShowMessage(clientInfo.Username + ": " + messRead);
+                    // Nhận tên người dùng từ client
+                    byte[] buffer = new byte[1024];
+                    int byteCount = await sslStream.ReadAsync(buffer, 0, buffer.Length);
+                    username = Encoding.UTF8.GetString(buffer, 0, byteCount).Trim();
 
-                    await BroadcastAsync(clientInfo.Username + ": " + messRead, clientInfo.TcpClient);
+                    // Thêm client vào danh sách
+                    var clientInfo = new ClientInfo { TcpClient = client, SslStream = sslStream, Username = username };
+                    clients.Add(clientInfo);
+                    ShowUser("User name : " + username);
+                    showStatus(username + " đã kết nối!");
+
+                    // Gửi danh sách người dùng cho tất cả các client
+                    await SendClientListToAllAsync();
+
+                    // Xử lý tin nhắn từ client
+                    await HandleMessagesAsync(clientInfo);
                 }
             }
             catch (Exception ex)
@@ -138,29 +106,56 @@ namespace Server
             }
             finally
             {
-                clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c != clientInfo));
-                clientInfo.TcpClient.Close();
+                if (username != null)
+                {
+                    // Loại bỏ client ra khỏi danh sách
+                    clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c.Username != username));
+                    RemoveUser("User name : " + username);
+                    await SendClientListToAllAsync();
+                    showStatus(username + " đã ngắt kết nối.");
+                }
 
-                // Cập nhật danh sách người dùng cho tất cả các client
-                await SendClientListToAll();
-
-                showStatus(clientInfo.Username + " disconnected!");
-                RemoveUser("User name : " + clientInfo.Username);
+                client.Close();
             }
         }
 
-        // Gửi tin nhắn đến các Client khác trong danh sách kết nối
+        // Xử lý tin nhắn từ client
+        private async Task HandleMessagesAsync(ClientInfo clientInfo)
+        {
+            try
+            {
+                var sslStream = clientInfo.SslStream;
+                message = new byte[1024];
+
+                while (true)
+                {
+                    int byteRead = await sslStream.ReadAsync(message, 0, message.Length);
+                    if (byteRead == 0) break;
+
+                    string receivedMessage = Encoding.UTF8.GetString(message, 0, byteRead);
+                    ShowMessage(clientInfo.Username + ": " + receivedMessage);
+
+                    await BroadcastAsync(clientInfo.Username + ": " + receivedMessage, clientInfo.TcpClient);
+                }
+            }
+            catch (Exception ex)
+            {
+                showStatus("Error: " + ex.Message);
+            }
+        }
+
+        // Gửi tin nhắn đến tất cả các client ngoại trừ client gửi
         private async Task BroadcastAsync(string message, TcpClient excludeClient)
         {
             byte[] dataByte = Encoding.UTF8.GetBytes(message);
+
             var tasks = clients
                 .Where(c => c.TcpClient != excludeClient)
                 .Select(async clientInfo =>
                 {
                     try
                     {
-                        SslStream sslStream = clientInfo.SslStream;
-                        await sslStream.WriteAsync(dataByte, 0, dataByte.Length);
+                        await clientInfo.SslStream.WriteAsync(dataByte, 0, dataByte.Length);
                     }
                     catch (Exception ex)
                     {
@@ -168,13 +163,13 @@ namespace Server
                         clientInfo.TcpClient.Close();
                         clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c != clientInfo));
                     }
-                }).ToList();
+                });
 
             await Task.WhenAll(tasks);
         }
 
-        // Gửi danh sách người dùng đến tất cả các client
-        private async Task SendClientListToAll()
+        // Gửi danh sách người dùng cho tất cả các client
+        private async Task SendClientListToAllAsync()
         {
             var clientListMessage = "/ClientList " + string.Join(", ", clients.Select(c => c.Username));
             byte[] dataByte = Encoding.UTF8.GetBytes(clientListMessage);
@@ -183,8 +178,7 @@ namespace Server
             {
                 try
                 {
-                    SslStream sslStream = clientInfo.SslStream;
-                    await sslStream.WriteAsync(dataByte, 0, dataByte.Length);
+                    await clientInfo.SslStream.WriteAsync(dataByte, 0, dataByte.Length);
                 }
                 catch (Exception ex)
                 {
@@ -192,12 +186,12 @@ namespace Server
                     clientInfo.TcpClient.Close();
                     clients = new ConcurrentBag<ClientInfo>(clients.Where(c => c != clientInfo));
                 }
-            }).ToList();
+            });
 
             await Task.WhenAll(tasks);
         }
 
-        // Đóng server
+        // Dừng server
         private void Stop_Server()
         {
             if (server != null)
@@ -207,6 +201,7 @@ namespace Server
                     clientInfo.SslStream.Close();
                     clientInfo.TcpClient.Close();
                 }
+
                 server.Stop();
                 clients = new ConcurrentBag<ClientInfo>();
                 showStatus("Server đã ngắt kết nối.");
@@ -219,7 +214,7 @@ namespace Server
         }
 
         // Đưa danh sách user(Client) kết nối tới server lên Ô Connect user
-        void ShowUser(string username)
+        private void ShowUser(string username)
         {
             if (listbox_User.InvokeRequired)
             {
@@ -232,7 +227,7 @@ namespace Server
         }
 
         // Xóa người dùng (Client) đã ngắt kết nối với user
-        void RemoveUser(string username)
+        private void RemoveUser(string username)
         {
             if (listbox_User.InvokeRequired)
             {
@@ -245,7 +240,7 @@ namespace Server
         }
 
         // Đưa tin nhắn lên Ô Message
-        void ShowMessage(string message)
+        private void ShowMessage(string message)
         {
             if (listbox_result.InvokeRequired)
             {
@@ -257,29 +252,45 @@ namespace Server
             }
         }
 
-        // Đưa thông tin IP server lên ô địa chỉ server
-        public void showIP(string message)
-        {
-            if (txt_IPAddress.InvokeRequired)
-            {
-                txt_IPAddress.Invoke(new Action(() => showIP(message)));
-            }
-            else
-            {
-                txt_IPAddress.Text = message + Environment.NewLine + txt_IPAddress.Text;
-            }
-        }
-
+        // Đưa thông tin về trạng thái của server lên ô trạng thái
         public void showStatus(string message)
         {
             if (txt_status.InvokeRequired)
             {
-                txt_status.Invoke(new Action(() => showStatus(message)));
+                txt_status.Invoke(new Action(() => txt_status.Text = message + Environment.NewLine + txt_status.Text));
             }
             else
             {
                 txt_status.Text = message + Environment.NewLine + txt_status.Text;
             }
+        }
+
+        // Start server - Click
+        private async void btn_StartServer_Click(object sender, EventArgs e)
+        {
+            await Start_Server();
+        }
+
+        // Stop server - Click
+        private void btn_StopServer_Click(object sender, EventArgs e)
+        {
+            Stop_Server();
+            this.Close();
+        }
+
+        // Send message - Click
+        private async void btn_Send_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txt_Message.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tin nhắn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string message = "Server: " + txt_Message.Text;
+            await BroadcastAsync(message, null);
+            ShowMessage("Tôi gửi: " + txt_Message.Text);
+            txt_Message.Clear();
         }
     }
 

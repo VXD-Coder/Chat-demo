@@ -14,6 +14,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Client
-build_property.ProjectDir = D:\Study\2023-2024\Lap Trinh Mang\Chat-demo\Client\
+build_property.ProjectDir = D:\HOC_TAP\GTVT-HE(2024)\Source\demoProject\Chat-demo\Client\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

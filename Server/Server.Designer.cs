@@ -29,13 +29,10 @@
         private void InitializeComponent()
         {
             txt_Message = new TextBox();
-            btn_Send = new Button();
             panel1 = new Panel();
             label6 = new Label();
-            btn_StopServer = new Button();
             btn_StartServer = new Button();
             label3 = new Label();
-            label2 = new Label();
             label1 = new Label();
             txt_Port = new TextBox();
             txt_IPAddress = new TextBox();
@@ -46,6 +43,8 @@
             panel2 = new Panel();
             panel3 = new Panel();
             label5 = new Label();
+            btn_Send = new Button();
+            btn_StopServer = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -59,27 +58,13 @@
             txt_Message.Size = new Size(462, 49);
             txt_Message.TabIndex = 12;
             // 
-            // btn_Send
-            // 
-            btn_Send.BackColor = SystemColors.MenuHighlight;
-            btn_Send.Enabled = false;
-            btn_Send.Font = new Font("Stencil", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_Send.Location = new Point(790, 525);
-            btn_Send.Name = "btn_Send";
-            btn_Send.Size = new Size(94, 42);
-            btn_Send.TabIndex = 3;
-            btn_Send.Text = "Send";
-            btn_Send.UseVisualStyleBackColor = false;
-            btn_Send.Click += button1_Click;
-            // 
             // panel1
             // 
             panel1.BackColor = SystemColors.ControlLight;
-            panel1.Controls.Add(label6);
             panel1.Controls.Add(btn_StopServer);
+            panel1.Controls.Add(label6);
             panel1.Controls.Add(btn_StartServer);
             panel1.Controls.Add(label3);
-            panel1.Controls.Add(label2);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(txt_Port);
             panel1.Controls.Add(txt_IPAddress);
@@ -98,18 +83,6 @@
             label6.Size = new Size(106, 20);
             label6.TabIndex = 11;
             label6.Text = "IP Address";
-            // 
-            // btn_StopServer
-            // 
-            btn_StopServer.Enabled = false;
-            btn_StopServer.Font = new Font("Arial Narrow", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btn_StopServer.Location = new Point(168, 499);
-            btn_StopServer.Name = "btn_StopServer";
-            btn_StopServer.Size = new Size(116, 34);
-            btn_StopServer.TabIndex = 9;
-            btn_StopServer.Text = "Stop Server";
-            btn_StopServer.UseVisualStyleBackColor = true;
-            btn_StopServer.Click += button3_Click;
             // 
             // btn_StartServer
             // 
@@ -131,13 +104,6 @@
             label3.Size = new Size(62, 20);
             label3.TabIndex = 5;
             label3.Text = "Port :";
-            // 
-            // label2
-            // 
-            label2.Location = new Point(0, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(100, 23);
-            label2.TabIndex = 10;
             // 
             // label1
             // 
@@ -232,17 +198,41 @@
             label5.TabIndex = 8;
             label5.Text = "MESSAGE BOX";
             // 
+            // btn_Send
+            // 
+            btn_Send.BackColor = SystemColors.MenuHighlight;
+            btn_Send.Enabled = false;
+            btn_Send.Font = new Font("Stencil", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btn_Send.Location = new Point(790, 526);
+            btn_Send.Name = "btn_Send";
+            btn_Send.Size = new Size(94, 41);
+            btn_Send.TabIndex = 13;
+            btn_Send.Text = "Send";
+            btn_Send.UseVisualStyleBackColor = false;
+            btn_Send.Click += btn_Send_Click;
+            // 
+            // btn_StopServer
+            // 
+            btn_StopServer.Font = new Font("Arial", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 163);
+            btn_StopServer.Location = new Point(164, 502);
+            btn_StopServer.Name = "btn_StopServer";
+            btn_StopServer.Size = new Size(120, 34);
+            btn_StopServer.TabIndex = 12;
+            btn_StopServer.Text = "Stop Server";
+            btn_StopServer.UseVisualStyleBackColor = true;
+            btn_StopServer.Click += btn_StopServer_Click;
+            // 
             // Server
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlDarkDark;
             ClientSize = new Size(896, 579);
+            Controls.Add(btn_Send);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(listbox_result);
             Controls.Add(panel1);
-            Controls.Add(btn_Send);
             Controls.Add(txt_Message);
             Name = "Server";
             Text = "Server";
@@ -258,16 +248,13 @@
 
         #endregion
         private TextBox txt_Message;
-        private Button btn_Send;
         private Panel panel1;
         private ListBox listbox_User;
         private Label label3;
-        private Label label2;
         private Label label1;
         private TextBox txt_Port;
         private TextBox txt_IPAddress;
         private ListBox listbox_result;
-        private Button btn_StopServer;
         private Button btn_StartServer;
         private Label label4;
         private TextBox txt_status;
@@ -275,5 +262,7 @@
         private Panel panel3;
         private Label label5;
         private Label label6;
+        private Button btn_Send;
+        private Button btn_StopServer;
     }
 }
