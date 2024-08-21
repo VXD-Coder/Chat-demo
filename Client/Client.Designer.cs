@@ -74,12 +74,14 @@
             // btn_Send
             // 
             btn_Send.BackColor = SystemColors.MenuHighlight;
+            btn_Send.Enabled = false;
             btn_Send.Font = new Font("Stencil", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btn_Send.Location = new Point(715, 651);
             btn_Send.Name = "btn_Send";
             btn_Send.Size = new Size(108, 41);
             btn_Send.TabIndex = 2;
             btn_Send.Text = "Send";
+            txt_Message.KeyDown += txt_Message_KeyDown;
             btn_Send.UseVisualStyleBackColor = false;
             btn_Send.Click += btn_Send_Click;
             // 

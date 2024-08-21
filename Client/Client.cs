@@ -19,11 +19,17 @@ namespace Client
             InitializeComponent();
         }
 
-        private bool ValidateInputs(out IPAddress ip, out int port, out string username)
+        private bool CheckInputs(out IPAddress ip, out int port, out string username)
         {
             ip = null;
             port = 0;
             username = string.Empty;
+
+            if (string.IsNullOrEmpty(txt_username.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên người dùng *_*", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
 
             if (string.IsNullOrEmpty(txt_IPAddress.Text) || string.IsNullOrEmpty(txt_Port.Text))
             {
@@ -43,46 +49,42 @@ namespace Client
                 return false;
             }
 
-            if (string.IsNullOrEmpty(txt_username.Text))
-            {
-                MessageBox.Show("Vui lòng nhập tên người dùng *_*", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-
             username = txt_username.Text;
             return true;
         }
 
         private async Task Connect()
         {
-            if (!ValidateInputs(out IPAddress ip, out int port, out string username))
-                return;
-
             try
             {
+                // Kiểm tra khung nhập dữ liệu
+                if (!CheckInputs(out IPAddress ip, out int port, out string username)) return;
+
                 _client = new TcpClient();
                 await _client.ConnectAsync(ip, port);
+
                 showStatus("Đã kết nối đến server");
 
-                using (NetworkStream networkStream = _client.GetStream())
+                NetworkStream networkStream = _client.GetStream();
+
+                _sslStream = new SslStream(networkStream, false, ValidateServerCertificate, null);
+
+                try
                 {
-                    _sslStream = new SslStream(networkStream, false, ValidateServerCertificate, null);
-
-                    try
-                    {
-                        await _sslStream.AuthenticateAsClientAsync(ip.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        showStatus($"Xác thực thất bại: {ex.Message}");
-                        return;
-                    }
-
-                    byte[] byte_user = Encoding.UTF8.GetBytes(username);
-                    await _sslStream.WriteAsync(byte_user, 0, byte_user.Length);
-
-                    await ReceiveMessagesAsync(_sslStream);
+                    await _sslStream.AuthenticateAsClientAsync(ip.ToString());
                 }
+                catch (Exception ex)
+                {
+                    showStatus($"Xác thực thất bại: {ex.Message}");
+                    return;
+                }
+
+                // Gửi tên người dùng ngay khi kết nối
+                byte[] byte_user = Encoding.UTF8.GetBytes(username);
+                await _sslStream.WriteAsync(byte_user, 0, byte_user.Length);
+
+                _ = Task.Run(() => ReceiveMessagesAsync(_sslStream));
+
             }
             catch (Exception ex)
             {
@@ -148,7 +150,6 @@ namespace Client
         public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             // Chấp nhận tất cả chứng chỉ, bạn có thể thay đổi tùy theo nhu cầu
-            //return sslPolicyErrors == SslPolicyErrors.None;
             return true;
         }
 
@@ -228,6 +229,7 @@ namespace Client
             await Connect();
             txt_Message.Enabled = true;
             btn_disconnect.Enabled = true;
+            btn_Send.Enabled = true;
             btn_connect.Enabled = false;
         }
 
@@ -236,7 +238,17 @@ namespace Client
             Disconnect();
             txt_Message.Enabled = false;
             btn_disconnect.Enabled = false;
+            btn_Send.Enabled = false;
             btn_connect.Enabled = true;
+        }
+
+        private async void txt_Message_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Ngăn chặn tiếng "ting" khi nhấn Enter
+                btn_Send_Click(sender, e);
+            }
         }
     }
 }
